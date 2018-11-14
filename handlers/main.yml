@@ -1,0 +1,10 @@
+---
+- name: "restart_phpfpm_{{ version }}_service"
+  service:
+    name: "phpfpm-{{ version }}"
+    state: restarted
+
+- name: "restart_phpfpm_{{ version }}_systemd"
+  systemd:
+    name: "phpfpm-{{ version }}.service"
+    state: restarted

@@ -1,0 +1,21 @@
+galaxy_info:
+  role_name: phpfpm
+  author: youyo
+  description: setup phpfpm
+  license: MIT
+  min_ansible_version: 2.4
+  platforms:
+    - name: Amazon
+    - name: EL
+      versions:
+        - 7
+        - 6
+
+  galaxy_tags:
+    - system
+    - php
+
+dependencies:
+  - youyo.php
+  - tumf.systemd-service
+  - youyo.upstart

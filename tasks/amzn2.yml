@@ -1,0 +1,51 @@
+---
+- template:
+    src: php-fpm.conf.j2
+    dest: "{{ php_dir }}/{{ version }}/etc/php-fpm.conf"
+    owner: root
+    group: root
+    mode: 0644
+
+- file:
+    path: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/www.conf"
+    state: absent
+
+- file:
+    path: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/www.conf.default"
+    state: absent
+
+- file:
+    path: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- template:
+    src: www.conf.j2
+    dest: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/{{ item.value.name }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  with_dict: "{{ www }}"
+  notify: "restart_phpfpm_{{ version }}_systemd"
+
+- import_role:
+    name: tumf.systemd-service
+  vars:
+    systemd_service_name: "phpfpm-{{ version }}"
+    systemd_service_Unit_Description: "phpfpm-{{ version }}"
+    systemd_service_Unit_After:
+      - syslog.target
+      - network.target
+    systemd_service_Service_Type: simple
+    systemd_service_Service_Restart: always
+    systemd_service_Service_ExecStart: "{{ php_dir }}/{{ version }}/sbin/php-fpm --nodaemonize --allow-to-run-as-root"
+    systemd_service_Service_ExecReload: /bin/kill -USR2 $MAINPID
+  notify: "restart_phpfpm_{{ version }}_systemd"
+
+- systemd:
+    name: "phpfpm-{{ version }}.service"
+    daemon_reload: yes
+    enabled: yes
+    state: started

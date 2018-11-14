@@ -1,0 +1,12 @@
+{% set value = item.value %}
+[{{ value.name }}]
+user = {{ value.user }}
+group = {{ value.group }}
+listen = {{ value.listen }}
+listen.owner = {{ value.listen_owner }}
+listen.group = {{ value.listen_group }}
+listen.mode = {{ value.listen_mode }}
+pm = {{ value.pm }}
+pm.max_children = {{ value.pm_max_children }}
+pm.process_idle_timeout = {{ value.pm_process_idle_timeout }}
+pm.max_requests = {{ value.pm_max_requests }}
