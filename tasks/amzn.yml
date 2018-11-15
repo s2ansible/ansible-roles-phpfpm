@@ -15,6 +15,10 @@
     state: absent
 
 - file:
+    path: "{{ php_dir }}/{{ version }}/etc/php-fpm.conf.default"
+    state: absent
+
+- file:
     path: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/"
     state: directory
     owner: root
