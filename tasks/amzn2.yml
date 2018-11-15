@@ -38,14 +38,16 @@
     name: tumf.systemd-service
   vars:
     systemd_service_name: "phpfpm-{{ version }}"
-    systemd_service_Unit_Description: "phpfpm-{{ version }}"
+    systemd_service_Unit_Description: "The PHP FastCGI Process Manager {{ version }}"
     systemd_service_Unit_After:
       - syslog.target
       - network.target
     systemd_service_Service_Type: simple
     systemd_service_Service_Restart: always
-    systemd_service_Service_ExecStart: "{{ php_dir }}/{{ version }}/sbin/php-fpm --nodaemonize --allow-to-run-as-root"
+    systemd_service_Service_PIDFile: "/var/run/phpfpm-{{ version }}.pid"
+    systemd_service_Service_ExecStart: "{{ php_dir }}/{{ version }}/sbin/php-fpm --nodaemonize --allow-to-run-as-root --fpm-config {{ php_dir }}/{{ version }}/etc/php-fpm.conf"
     systemd_service_Service_ExecReload: /bin/kill -USR2 $MAINPID
+    systemd_service_Service_PrivateTmp: "true"
   notify: "restart_phpfpm_{{ version }}_systemd"
 
 - systemd:
