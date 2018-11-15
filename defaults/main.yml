@@ -1,8 +1,7 @@
 ---
 version: 7.2.9
 www:
-  domain1:
-    name: localhost
+  - name: localhost
     user: root
     group: root
     listen: /tmp/{{ version }}.sock

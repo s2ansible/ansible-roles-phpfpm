@@ -27,11 +27,11 @@
 
 - template:
     src: www.conf.j2
-    dest: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/{{ item.value.name }}.conf"
+    dest: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/{{ item.name }}.conf"
     owner: root
     group: root
     mode: 0644
-  with_dict: "{{ www }}"
+  with_items: "{{ www }}"
   notify: "restart_phpfpm_{{ version }}_systemd"
 
 - import_role:
