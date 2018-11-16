@@ -1,11 +1,11 @@
-[{{ item.name }}]
-user = {{ item.user }}
-group = {{ item.group }}
-listen = {{ item.listen }}
-listen.owner = {{ item.listen_owner }}
-listen.group = {{ item.listen_group }}
-listen.mode = {{ item.listen_mode }}
-pm = {{ item.pm }}
-pm.max_children = {{ item.pm_max_children }}
-pm.process_idle_timeout = {{ item.pm_process_idle_timeout }}
-pm.max_requests = {{ item.pm_max_requests }}
+[{{ item.key }}]
+user = {{ item.value.user }}
+group = {{ item.value.group }}
+listen = {{ item.value.listen }}
+listen.owner = {{ item.value.listen_owner }}
+listen.group = {{ item.value.listen_group }}
+listen.mode = {{ item.value.listen_mode }}
+pm = {{ item.value.pm }}
+pm.max_children = {{ item.value.pm_max_children }}
+pm.process_idle_timeout = {{ item.value.pm_process_idle_timeout }}
+pm.max_requests = {{ item.value.pm_max_requests }}
