@@ -1,31 +1,31 @@
 ---
-- template:
+- name: Configuration for php-fpm.conf
+  template:
     src: php-fpm.conf.j2
     dest: "{{ php_dir }}/{{ version }}/etc/php-fpm.conf"
     owner: root
     group: root
     mode: 0644
 
-- file:
-    path: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/www.conf"
+- name: Delete www.conf,www.conf.default
+  file:
+    path: "{{ item }}"
     state: absent
+  with_items:
+    - "{{ php_dir }}/{{ version }}/etc/php-fpm.d/www.conf"
+    - "{{ php_dir }}/{{ version }}/etc/php-fpm.d/www.conf.default"
+    - "{{ php_dir }}/{{ version }}/etc/php-fpm.conf.default"
 
-- file:
-    path: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/www.conf.default"
-    state: absent
-
-- file:
-    path: "{{ php_dir }}/{{ version }}/etc/php-fpm.conf.default"
-    state: absent
-
-- file:
+- name: Create directory
+  file:
     path: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/"
     state: directory
     owner: root
     group: root
     mode: 0755
 
-- template:
+- name: Create configuration
+  template:
     src: www.conf.j2
     dest: "{{ php_dir }}/{{ version }}/etc/php-fpm.d/{{ item.key }}.conf"
     owner: root
@@ -34,7 +34,8 @@
   with_dict: "{{ www }}"
   notify: "restart_phpfpm_{{ version }}_systemd"
 
-- import_role:
+- name: Setup systemd unit
+  import_role:
     name: tumf.systemd-service
   vars:
     systemd_service_name: "phpfpm-{{ version }}"
@@ -50,7 +51,8 @@
     systemd_service_Service_PrivateTmp: "true"
   notify: "restart_phpfpm_{{ version }}_systemd"
 
-- systemd:
+- name: Start service
+  systemd:
     name: "phpfpm-{{ version }}.service"
     daemon_reload: yes
     enabled: yes
