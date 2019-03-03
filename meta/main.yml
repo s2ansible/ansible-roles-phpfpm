@@ -18,5 +18,5 @@ galaxy_info:
 
 dependencies:
   - youyo.php
-  - youyo.systemd-service
+  - youyo.systemd_service
   - youyo.upstart
