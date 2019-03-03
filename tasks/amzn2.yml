@@ -36,7 +36,7 @@
 
 - name: Setup systemd unit
   import_role:
-    name: tumf.systemd-service
+    name: youyo.systemd-service
   vars:
     systemd_service_name: "phpfpm-{{ version }}"
     systemd_service_Unit_Description: "The PHP FastCGI Process Manager {{ version }}"
